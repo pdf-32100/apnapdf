@@ -1,0 +1,37 @@
+# Render blueprint for the PrintWala backend.
+# In Render: New + → Blueprint → point at this repo. Set the secret env vars
+# (DATABASE_URL, JWT_SECRET, RAZORPAY_*) in the dashboard.
+services:
+  - type: web
+    name: printwala-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install && npx prisma generate && npx prisma migrate deploy
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        sync: false # paste your Aiven URI (append ?sslmode=require)
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CORS_ORIGIN
+        sync: false # your Vercel URL, e.g. https://printwala.vercel.app
+      - key: PUBLIC_URL
+        sync: false # this service's URL, e.g. https://printwala-api.onrender.com
+      - key: ADMIN_NAME
+        value: PrintWala Admin
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false

@@ -1,0 +1,55 @@
+import { Link } from "react-router-dom";
+import { useSite } from "../context/SiteContext.jsx";
+import { LogoMark } from "./ui.jsx";
+
+export default function Footer() {
+  const { settings } = useSite();
+  const year = new Date().getFullYear();
+  return (
+    <footer className="mt-24 border-t border-ink/8 bg-ink text-cream">
+      <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="lg:col-span-1">
+          <div className="flex items-center gap-2.5">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/95 p-1 text-ink">
+              <LogoMark className="h-full w-full" />
+            </span>
+            <span className="font-sans text-xl font-extrabold tracking-tight">
+              <span className="text-white">Print</span><span className="text-clay-500">Wala</span>
+            </span>
+          </div>
+          <p className="mt-3 max-w-xs text-sm text-cream/60">{settings.tagline}</p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-bold uppercase tracking-wider text-cream/50">Explore</h4>
+          <ul className="mt-4 space-y-2.5 text-sm text-cream/80">
+            <li><Link to="/services" className="hover:text-white">All services</Link></li>
+            <li><Link to="/about" className="hover:text-white">About us</Link></li>
+            <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
+            <li><Link to="/orders" className="hover:text-white">Track an order</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-bold uppercase tracking-wider text-cream/50">Reach us</h4>
+          <ul className="mt-4 space-y-2.5 text-sm text-cream/80">
+            {settings.phone && <li>📞 {settings.phone}</li>}
+            {settings.email && <li>✉️ {settings.email}</li>}
+            {settings.hours && <li>🕑 {settings.hours}</li>}
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-bold uppercase tracking-wider text-cream/50">Visit</h4>
+          <p className="mt-4 text-sm leading-relaxed text-cream/80">{settings.address}</p>
+        </div>
+      </div>
+      <div className="border-t border-cream/10">
+        <div className="container-page flex flex-col items-center justify-between gap-2 py-5 text-xs text-cream/50 sm:flex-row">
+          <p>© {year} {settings.siteName}. All rights reserved.</p>
+          <p>Built with care · Secure payments by Razorpay</p>
+        </div>
+      </div>
+    </footer>
+  );
+}

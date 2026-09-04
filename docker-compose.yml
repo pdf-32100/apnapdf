@@ -1,0 +1,19 @@
+# Local Postgres for development. Matches DATABASE_URL in backend/.env.example.
+# Start:  docker compose up -d
+# Stop:   docker compose down     (add -v to also wipe the data)
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: servihub-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: servihub
+      POSTGRES_PASSWORD: servihub
+      POSTGRES_DB: servihub
+    ports:
+      - "5432:5432"
+    volumes:
+      - servihub_pgdata:/var/lib/postgresql/data
+
+volumes:
+  servihub_pgdata:
