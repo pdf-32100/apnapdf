@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
+import AnnouncementBar from "./components/AnnouncementBar.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import { RequireAuth, RequireAdmin } from "./components/guards.jsx";
@@ -31,6 +32,7 @@ export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
+      {!isAdmin && <AnnouncementBar />}
       {!isAdmin && <Navbar />}
       <main className="flex-1">
         <Routes>
