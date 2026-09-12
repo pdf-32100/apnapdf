@@ -205,24 +205,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ───────────── Offer banner ───────────── */}
-      <section className="container-page py-4">
-        <div className="relative overflow-hidden rounded-[2rem] bg-clay-500 px-8 py-12 sm:px-14 sm:py-14">
-          <div className="pointer-events-none absolute -right-8 -top-8 h-48 w-48 rounded-full bg-white/15 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-10 left-1/3 h-40 w-40 rounded-full bg-ink/10 blur-2xl" />
-          <div className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-            <div className="max-w-xl text-white">
-              <span className="badge bg-white/20 text-white">Limited time</span>
-              <h2 className="mt-3 text-3xl leading-tight text-white sm:text-4xl">Get 20% off your very first order</h2>
-              <p className="mt-2 text-white/85">
-                New to PrintWala? Use code <span className="rounded bg-white/20 px-2 py-0.5 font-mono font-semibold">HELLO20</span> at checkout and see how easy printing can be.
-              </p>
-            </div>
-            <Link to="/services" className="btn-ink shrink-0 text-base">Claim the offer</Link>
-          </div>
-        </div>
-      </section>
-
       {/* ───────────── How it works ───────────── */}
       {steps.length > 0 && (
         <section className="container-page py-16">

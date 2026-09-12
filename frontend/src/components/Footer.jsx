@@ -7,8 +7,8 @@ export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="mt-24 border-t border-ink/8 bg-ink text-cream">
-      <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="lg:col-span-1">
+      <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="sm:col-span-2 lg:col-span-2">
           <div className="flex items-center gap-2.5">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/95 p-1 text-ink">
               <LogoMark className="h-full w-full" />
@@ -31,6 +31,14 @@ export default function Footer() {
         </div>
 
         <div>
+          <h4 className="text-sm font-bold uppercase tracking-wider text-cream/50">Legal</h4>
+          <ul className="mt-4 space-y-2.5 text-sm text-cream/80">
+            <li><Link to="/terms" className="hover:text-white">Terms &amp; Conditions</Link></li>
+            <li><Link to="/privacy" className="hover:text-white">Privacy Policy</Link></li>
+          </ul>
+        </div>
+
+        <div>
           <h4 className="text-sm font-bold uppercase tracking-wider text-cream/50">Reach us</h4>
           <ul className="mt-4 space-y-2.5 text-sm text-cream/80">
             {settings.phone && <li>📞 {settings.phone}</li>}
@@ -38,16 +46,15 @@ export default function Footer() {
             {settings.hours && <li>🕑 {settings.hours}</li>}
           </ul>
         </div>
-
-        <div>
-          <h4 className="text-sm font-bold uppercase tracking-wider text-cream/50">Visit</h4>
-          <p className="mt-4 text-sm leading-relaxed text-cream/80">{settings.address}</p>
-        </div>
       </div>
       <div className="border-t border-cream/10">
         <div className="container-page flex flex-col items-center justify-between gap-2 py-5 text-xs text-cream/50 sm:flex-row">
           <p>© {year} {settings.siteName}. All rights reserved.</p>
-          <p>Built with care · Secure payments by Razorpay</p>
+          <div className="flex items-center gap-4">
+            <Link to="/terms" className="hover:text-cream">Terms</Link>
+            <Link to="/privacy" className="hover:text-cream">Privacy</Link>
+            <span>Secure payments by Razorpay</span>
+          </div>
         </div>
       </div>
     </footer>

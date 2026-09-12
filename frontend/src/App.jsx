@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
-import AnnouncementBar from "./components/AnnouncementBar.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import { RequireAuth, RequireAdmin } from "./components/guards.jsx";
@@ -12,6 +11,8 @@ import Booking from "./pages/Booking.jsx";
 import OrderConfirmation from "./pages/OrderConfirmation.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
+import Terms from "./pages/Terms.jsx";
+import Privacy from "./pages/Privacy.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import MyOrders from "./pages/MyOrders.jsx";
@@ -32,7 +33,6 @@ export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
-      {!isAdmin && <AnnouncementBar />}
       {!isAdmin && <Navbar />}
       <main className="flex-1">
         <Routes>
@@ -43,6 +43,8 @@ export default function App() {
           <Route path="/order/:id" element={<OrderConfirmation />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/orders" element={<RequireAuth><MyOrders /></RequireAuth>} />
