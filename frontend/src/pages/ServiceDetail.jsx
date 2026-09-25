@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../api/client.js";
+import Img from "../components/Img.jsx";
+import { FALLBACK } from "../lib/images.js";
 import { formatINR } from "../lib/format.js";
 import { PageLoader } from "../components/ui.jsx";
 import NotFound from "./NotFound.jsx";
@@ -41,9 +43,15 @@ export default function ServiceDetail() {
       <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <div className="overflow-hidden rounded-[1.5rem] border border-ink/10 shadow-soft">
-            <img
-              src={service.imageUrl || "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80"}
+            <Img
+              src={service.imageUrl}
+              fallback={FALLBACK.service}
               alt={service.title}
+              width={1200}
+              height={680}
+              widths={[640, 960, 1280, 1600]}
+              sizes="(min-width: 1024px) 55vw, 100vw"
+              loading="eager"
               className="h-[340px] w-full object-cover"
             />
           </div>

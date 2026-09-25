@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/client.js";
+import Img from "../components/Img.jsx";
 import { formatINR, formatDate, STATUS_STYLES, statusLabel } from "../lib/format.js";
 import { EmptyState, Spinner } from "../components/ui.jsx";
 
@@ -37,7 +38,7 @@ export default function MyOrders() {
             <Link key={o.id} to={`/order/${o.id}`}
               className="card flex flex-col gap-4 p-5 transition hover:shadow-lift sm:flex-row sm:items-center">
               {o.service?.imageUrl && (
-                <img src={o.service.imageUrl} alt="" className="h-16 w-16 rounded-xl object-cover" />
+                <Img src={o.service.imageUrl} alt="" width={128} height={128} className="h-16 w-16 rounded-xl object-cover" />
               )}
               <div className="flex-1">
                 <div className="flex items-center gap-3">

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../api/client.js";
+import Img from "../components/Img.jsx";
 import { formatINR, formatDateTime, STATUS_STYLES, statusLabel } from "../lib/format.js";
 import { PageLoader } from "../components/ui.jsx";
 import NotFound from "./NotFound.jsx";
@@ -57,7 +58,7 @@ export default function OrderConfirmation() {
             {/* Service */}
             <div className="flex items-center gap-4">
               {order.service?.imageUrl && (
-                <img src={order.service.imageUrl} alt="" className="h-16 w-16 rounded-xl object-cover" />
+                <Img src={order.service.imageUrl} alt="" width={128} height={128} className="h-16 w-16 rounded-xl object-cover" />
               )}
               <div className="flex-1">
                 <p className="font-semibold">{order.service?.title}</p>

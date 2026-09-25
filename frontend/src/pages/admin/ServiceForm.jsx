@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/client.js";
+import ImageUploader from "../../components/ImageUploader.jsx";
 import { Alert, PageLoader } from "../../components/ui.jsx";
 
 const BLANK = {
@@ -167,11 +168,13 @@ export default function ServiceForm() {
               </div>
             </div>
           </div>
-          <div>
-            <label className="label">Image URL</label>
-            <input className="input" value={form.imageUrl} onChange={(e) => set("imageUrl", e.target.value)} placeholder="https://…" />
-            {form.imageUrl && <img src={form.imageUrl} alt="" className="mt-3 h-32 w-full rounded-xl object-cover" onError={(e) => (e.currentTarget.style.display = "none")} />}
-          </div>
+          <ImageUploader
+            label="Service image"
+            kind="service"
+            value={form.imageUrl}
+            onChange={(v) => set("imageUrl", v)}
+            hint="Shown on service cards and the service page. JPG, PNG or WebP up to 10 MB."
+          />
         </section>
 
         <section className="card space-y-4 p-6">

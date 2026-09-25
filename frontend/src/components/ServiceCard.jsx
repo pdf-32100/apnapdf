@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { formatINR } from "../lib/format.js";
-
-const FALLBACK_IMG =
-  "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1000&q=80";
+import { FALLBACK } from "../lib/images.js";
+import Img from "./Img.jsx";
 
 export default function ServiceCard({ service }) {
   return (
@@ -11,10 +10,14 @@ export default function ServiceCard({ service }) {
       className="card group flex flex-col overflow-hidden transition duration-200 hover:-translate-y-1 hover:shadow-lift"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-clay-50">
-        <img
-          src={service.imageUrl || FALLBACK_IMG}
+        <Img
+          src={service.imageUrl}
+          fallback={FALLBACK.service}
           alt={service.title}
-          loading="lazy"
+          width={640}
+          height={480}
+          widths={[320, 480, 640, 960]}
+          sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
         {service.category && (

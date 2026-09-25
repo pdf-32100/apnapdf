@@ -3,9 +3,13 @@ import { z } from "zod";
 import prisma from "../lib/prisma.js";
 import { asyncH, slugify } from "../utils/helpers.js";
 import { requireAdmin } from "../middleware/auth.js";
+import uploadRoutes from "./uploads.js";
 
 const router = Router();
 router.use(requireAdmin);
+
+/* ───────────────────── Media library (ImageKit) ───────────────────── */
+router.use("/uploads", uploadRoutes);
 
 /* ───────────────────────── Dashboard ───────────────────────── */
 router.get(

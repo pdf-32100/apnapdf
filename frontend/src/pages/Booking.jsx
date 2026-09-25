@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../api/client.js";
+import Img from "../components/Img.jsx";
+import { FALLBACK } from "../lib/images.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useSite } from "../context/SiteContext.jsx";
 import { formatINR } from "../lib/format.js";
@@ -225,7 +227,7 @@ export default function Booking() {
           <div className="sticky top-24 card p-6">
             <h2 className="text-lg">Order summary</h2>
             <div className="mt-4 flex items-center gap-3">
-              <img src={service.imageUrl} alt="" className="h-14 w-14 rounded-xl object-cover" />
+              <Img src={service.imageUrl} fallback={FALLBACK.service} alt="" width={112} height={112} className="h-14 w-14 rounded-xl object-cover" />
               <div>
                 <p className="font-semibold leading-tight">{service.title}</p>
                 <p className="text-xs text-ink-mute">{formatINR(service.price)} / unit</p>

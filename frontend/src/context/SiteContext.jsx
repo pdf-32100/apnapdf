@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../api/client.js";
+import { setImageKitEndpoint } from "../lib/imagekit.js";
 
 const SiteContext = createContext(null);
 
@@ -16,6 +17,15 @@ const FALLBACK = {
 export function SiteProvider({ children }) {
   const [settings, setSettings] = useState(FALLBACK);
   const [ready, setReady] = useState(false);
+
+  // Tell the image helpers which CDN endpoint the backend is using, so
+  // transformations are applied to our own assets only.
+  useEffect(() => {
+    api
+      .get("/config")
+      .then((res) => setImageKitEndpoint(res.data?.imagekit?.urlEndpoint))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     api

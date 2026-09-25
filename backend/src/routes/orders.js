@@ -4,7 +4,7 @@ import prisma from "../lib/prisma.js";
 import env from "../config/env.js";
 import { asyncH, makeOrderNumber } from "../utils/helpers.js";
 import { requireAuth } from "../middleware/auth.js";
-import { upload } from "../middleware/upload.js";
+import { upload, persistFile, FOLDERS } from "../middleware/upload.js";
 import {
   createPaymentOrder,
   verifyPaymentSignature,
@@ -68,7 +68,12 @@ router.post(
     const quantity = data.quantity && data.quantity > 0 ? data.quantity : 1;
     const amount = service.price * quantity;
 
-    const fileUrl = req.file ? `${env.publicUrl}/uploads/${req.file.filename}` : null;
+    // Store the customer's file on ImageKit (local disk when not configured).
+    const stored = await persistFile(req.file, {
+      folder: FOLDERS.orders,
+      tags: ["order", service.slug],
+    });
+    const fileUrl = stored?.url || null;
     const fileName = req.file ? req.file.originalname : null;
 
     // Attach the logged-in user if a valid token was sent.

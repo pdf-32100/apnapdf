@@ -17,6 +17,16 @@ const env = {
       return Boolean(this.keyId && this.keySecret);
     },
   },
+  imagekit: {
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY || "",
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY || "",
+    urlEndpoint: (process.env.IMAGEKIT_URL_ENDPOINT || "").replace(/\/$/, ""),
+    // Root folder inside the ImageKit media library.
+    folder: (process.env.IMAGEKIT_FOLDER || "/printwala").replace(/\/$/, ""),
+    get enabled() {
+      return Boolean(this.publicKey && this.privateKey && this.urlEndpoint);
+    },
+  },
   admin: {
     name: process.env.ADMIN_NAME || "PrintWala Admin",
     email: process.env.ADMIN_EMAIL || "admin@printwala.test",

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api/client.js";
+import Img from "../../components/Img.jsx";
+import { FALLBACK } from "../../lib/images.js";
 import { formatINR } from "../../lib/format.js";
 import { Spinner, EmptyState } from "../../components/ui.jsx";
 
@@ -72,7 +74,7 @@ export default function AdminServices() {
         <div className="space-y-3">
           {services.map((s) => (
             <div key={s.id} className={`card flex flex-col gap-4 p-4 sm:flex-row sm:items-center ${!s.active ? "opacity-60" : ""}`}>
-              <img src={s.imageUrl || "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=400&q=60"} alt="" className="h-16 w-16 rounded-xl object-cover" />
+              <Img src={s.imageUrl} fallback={FALLBACK.service} alt="" width={128} height={128} className="h-16 w-16 rounded-xl object-cover" />
               <div className="flex-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-semibold">{s.title}</p>

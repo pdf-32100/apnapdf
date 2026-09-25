@@ -7,6 +7,7 @@ import { attachUser } from "./middleware/auth.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { uploadsDir } from "./middleware/upload.js";
 import { isMock } from "./utils/razorpay.js";
+import { imagekitEnabled } from "./utils/imagekit.js";
 
 import authRoutes from "./routes/auth.js";
 import serviceRoutes from "./routes/services.js";
@@ -44,6 +45,10 @@ app.get("/api/health", (_req, res) => res.json({ status: "ok", time: new Date().
 app.get("/api/config", (_req, res) => {
   res.json({
     razorpay: { keyId: env.razorpay.keyId || null, mock: isMock },
+    imagekit: {
+      enabled: imagekitEnabled,
+      urlEndpoint: env.imagekit.urlEndpoint || null,
+    },
   });
 });
 
@@ -59,5 +64,6 @@ app.use(errorHandler);
 app.listen(env.port, () => {
   console.log(`\n  PrintWala API listening on http://localhost:${env.port}`);
   console.log(`  Payments: ${isMock ? "MOCK mode (no keys set)" : "Razorpay LIVE keys"}`);
+  console.log(`  Images:   ${imagekitEnabled ? `ImageKit (${env.imagekit.urlEndpoint})` : "local ./uploads (ImageKit keys not set)"}`);
   console.log(`  CORS origins: ${env.corsOrigins.join(", ")}\n`);
 });

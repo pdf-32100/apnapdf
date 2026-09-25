@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/client.js";
+import ImageUploader from "../../components/ImageUploader.jsx";
 import { Alert, Spinner } from "../../components/ui.jsx";
 
 const TABS = [
@@ -163,10 +164,14 @@ function HomeForm({ value, set }) {
       <Card title="Hero section">
         <Text label="Headline" value={value.heroTitle} onChange={(v) => set("heroTitle", v)} />
         <Text label="Subtext" value={value.heroSubtitle} onChange={(v) => set("heroSubtitle", v)} textarea />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Text label="Button text" value={value.heroCta} onChange={(v) => set("heroCta", v)} />
-          <Text label="Hero image URL" value={value.heroImage} onChange={(v) => set("heroImage", v)} />
-        </div>
+        <Text label="Button text" value={value.heroCta} onChange={(v) => set("heroCta", v)} />
+        <ImageUploader
+          label="Hero image"
+          kind="content"
+          value={value.heroImage}
+          onChange={(v) => set("heroImage", v)}
+          hint="The large picture beside the headline. Landscape works best."
+        />
       </Card>
       <Card title="Stats">
         <ListEditor label="Highlight numbers" items={value.stats} onChange={(v) => set("stats", v)}
@@ -194,7 +199,13 @@ function AboutForm({ value, set }) {
         <Text label="Title" value={value.title} onChange={(v) => set("title", v)} />
         <Text label="Subtitle" value={value.subtitle} onChange={(v) => set("subtitle", v)} />
         <Text label="Body (blank line = new paragraph)" value={value.body} onChange={(v) => set("body", v)} textarea rows={6} />
-        <Text label="Image URL" value={value.image} onChange={(v) => set("image", v)} />
+        <ImageUploader
+          label="About image"
+          kind="content"
+          value={value.image}
+          onChange={(v) => set("image", v)}
+          hint="Shown next to your story. A team or shop photo works well."
+        />
       </Card>
       <Card title="Values">
         <ListEditor label="What you stand for" items={value.values} onChange={(v) => set("values", v)}

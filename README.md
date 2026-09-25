@@ -16,7 +16,7 @@ ecom/
 ```
 
 Tech: **React 18 + Vite + Tailwind** · **Node/Express + Prisma** · **PostgreSQL** · **Razorpay**
-· **JWT auth** · file uploads via Multer.
+· **JWT auth** · images & file uploads on **ImageKit.io**.
 
 ---
 
@@ -39,6 +39,16 @@ Tech: **React 18 + Vite + Tailwind** · **Node/Express + Prisma** · **PostgreSQ
 
 **Payments** — Razorpay integration with an automatic **mock mode**: with no keys set the
 whole flow works (payments auto‑succeed) so you can develop and demo without an account.
+
+**Images & files — ImageKit.io** — every image on the platform is stored on and served from
+ImageKit:
+- Admins upload service images and site‑content images by drag‑and‑drop (no URL pasting),
+  straight from the admin panel to the ImageKit media library.
+- Customer booking uploads (PDFs, scans, photos) go to the same media library.
+- The storefront renders every image through one `<Img>` component, which asks ImageKit for
+  the exact size needed, auto‑negotiates AVIF/WebP, ships a responsive `srcSet`, and fades in
+  from a blurred low‑quality placeholder.
+- Without ImageKit keys everything falls back to local disk, so local dev needs no account.
 
 ---
 
@@ -116,6 +126,8 @@ Option B — manual **Web Service**:
   | `PUBLIC_URL` | this Render service URL, e.g. `https://printwala-api.onrender.com` |
   | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | your first admin login |
   | `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | from Razorpay (leave blank for mock) |
+  | `IMAGEKIT_PUBLIC_KEY` / `IMAGEKIT_PRIVATE_KEY` / `IMAGEKIT_URL_ENDPOINT` | from ImageKit → Developer options → API keys |
+  | `IMAGEKIT_FOLDER` | media‑library root folder, defaults to `/printwala` |
 
 After the first deploy, seed the production data once (Render **Shell**):
 ```bash
@@ -134,9 +146,31 @@ npm run seed
 - Set them on Render. The frontend reads the mode from `GET /api/config`, so no frontend
   change is needed — the real Checkout popup appears automatically once keys are present.
 
-> **File storage note:** uploads are written to the backend's local `uploads/` folder.
-> Render's disk is ephemeral (files are lost on redeploy). For production durability, add a
-> Render **persistent disk** mounted at `backend/uploads`, or switch Multer to S3/Cloudinary.
+### 5. ImageKit (image & file storage)
+
+Render's and Vercel's filesystems are ephemeral — anything written to `backend/uploads` is
+lost on the next deploy — so **set the ImageKit keys in production**.
+
+1. Create a free account at [imagekit.io](https://imagekit.io).
+2. **Developer options → API keys**: copy the *Public key*, *Private key* and *URL endpoint*
+   (`https://ik.imagekit.io/<your_id>`).
+3. Set `IMAGEKIT_PUBLIC_KEY`, `IMAGEKIT_PRIVATE_KEY` and `IMAGEKIT_URL_ENDPOINT` on Render.
+   The frontend picks the endpoint up from `GET /api/config`, so no frontend change is
+   needed. (Optionally set `VITE_IMAGEKIT_URL_ENDPOINT` on Vercel too — useful with a custom
+   ImageKit domain, so transformations apply on the very first render.)
+4. Move images you already have into ImageKit and rewrite the database to point at them:
+
+   ```bash
+   cd backend
+   node scripts/migrate-images-to-imagekit.js --dry      # preview
+   node scripts/migrate-images-to-imagekit.js            # move local uploads/ files
+   node scripts/migrate-images-to-imagekit.js --remote   # also re-host remote URLs (Unsplash…)
+   ```
+
+Uploads are proxied through the backend, so the private key never reaches the browser.
+
+> Without these keys the app still runs and stores uploads in `backend/uploads` — fine for
+> local development, not for production.
 
 ---
 
@@ -151,6 +185,8 @@ npm run seed
 | POST | `/api/orders/:id/verify` | verify payment |
 | GET | `/api/orders/:id` · `/orders/mine/list` | order details / my orders |
 | * | `/api/admin/*` | admin: stats, services, categories, content, orders, messages |
+| POST | `/api/admin/uploads/image` | admin: upload an image to ImageKit (multipart, field `image`) |
+| DELETE | `/api/admin/uploads/:fileId` | admin: remove an asset from the media library |
 
 Admin routes require a `Bearer` JWT for a user with role `ADMIN`.
 
@@ -164,6 +200,7 @@ npm run dev            # watch mode
 npm run seed           # (re)seed demo data
 npx prisma studio      # visual DB browser
 npx prisma migrate dev # create a migration after schema changes
+node scripts/migrate-images-to-imagekit.js --dry   # preview media migration to ImageKit
 
 # frontend
 npm run build          # production build

@@ -35,3 +35,11 @@ services:
         sync: false
       - key: RAZORPAY_KEY_SECRET
         sync: false
+      - key: IMAGEKIT_PUBLIC_KEY
+        sync: false
+      - key: IMAGEKIT_PRIVATE_KEY
+        sync: false
+      - key: IMAGEKIT_URL_ENDPOINT
+        sync: false # e.g. https://ik.imagekit.io/your_imagekit_id
+      - key: IMAGEKIT_FOLDER
+        value: /printwala

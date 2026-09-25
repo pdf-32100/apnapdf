@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import api from "../api/client.js";
 import { useContentBlock } from "../context/SiteContext.jsx";
 import ServiceCard from "../components/ServiceCard.jsx";
+import Img from "../components/Img.jsx";
+import { FALLBACK, GALLERY } from "../lib/images.js";
 import { SectionTitle, Spinner } from "../components/ui.jsx";
 
 const CATEGORY_ICONS = {
@@ -18,15 +20,6 @@ const FEATURES = [
   { icon: "🔒", title: "Secure online payments", text: "Pay by UPI, card or netbanking. Every transaction is encrypted and safe." },
   { icon: "🚚", title: "Pickup or delivery", text: "Collect from the shop when it suits you, or get it delivered to your door." },
   { icon: "🎯", title: "Quality, guaranteed", text: "Not happy with a print? We'll redo it for free, no questions asked." },
-];
-
-const GALLERY = [
-  "https://images.unsplash.com/photo-1516414447565-b14be0adf13e?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1600793575654-910699b5e4d4?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1606636660801-c61b8e97a7b8?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1519337265831-281ec6cc8514?auto=format&fit=crop&w=600&q=80",
 ];
 
 const FAQS = [
@@ -111,9 +104,15 @@ export default function Home() {
             <div className="absolute -right-6 -top-6 h-40 w-40 rounded-full bg-clay-200/50 blur-2xl" />
             <div className="absolute -bottom-8 -left-8 h-44 w-44 rounded-full bg-moss-100 blur-2xl" />
             <div className="relative overflow-hidden rounded-[2rem] border border-ink/10 shadow-lift">
-              <img
-                src={home.heroImage || "https://images.unsplash.com/photo-1497032205916-ac775f0649ae?auto=format&fit=crop&w=1200&q=80"}
+              <Img
+                src={home.heroImage}
+                fallback={FALLBACK.hero}
                 alt="People getting things done"
+                width={1000}
+                height={840}
+                widths={[600, 900, 1200, 1600]}
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                loading="eager"
                 className="h-[420px] w-full object-cover"
               />
             </div>
@@ -244,7 +243,15 @@ export default function Home() {
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
           {GALLERY.map((src, i) => (
             <div key={i} className={`overflow-hidden rounded-2xl border border-ink/8 ${i === 0 ? "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" : ""}`}>
-              <img src={src} alt="Print sample" loading="lazy" className={`h-full w-full object-cover transition duration-500 hover:scale-105 ${i === 0 ? "aspect-square sm:aspect-auto" : "aspect-square"}`} />
+              <Img
+                src={src}
+                alt="Print sample"
+                width={i === 0 ? 800 : 400}
+                height={i === 0 ? 800 : 400}
+                widths={[300, 500, 800]}
+                sizes="(min-width: 640px) 33vw, 50vw"
+                className={`h-full w-full object-cover transition duration-500 hover:scale-105 ${i === 0 ? "aspect-square sm:aspect-auto" : "aspect-square"}`}
+              />
             </div>
           ))}
         </div>

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContentBlock } from "../context/SiteContext.jsx";
+import Img from "../components/Img.jsx";
+import { FALLBACK } from "../lib/images.js";
 import { PageLoader } from "../components/ui.jsx";
 
 export default function About() {
@@ -26,9 +28,15 @@ export default function About() {
           <div className="relative">
             <div className="absolute -left-6 -top-6 h-40 w-40 rounded-full bg-moss-100 blur-2xl" />
             <div className="relative overflow-hidden rounded-[2rem] border border-ink/10 shadow-lift">
-              <img
-                src={about.image || "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80"}
+              <Img
+                src={about.image}
+                fallback={FALLBACK.about}
                 alt="Our team"
+                width={1000}
+                height={840}
+                widths={[600, 900, 1200]}
+                sizes="(min-width: 768px) 45vw, 100vw"
+                loading="eager"
                 className="h-[420px] w-full object-cover"
               />
             </div>
