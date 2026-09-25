@@ -4,10 +4,10 @@ import Img from "./Img.jsx";
 import { isImageKitUrl } from "../lib/imagekit.js";
 
 /**
- * Admin image field: drop / pick a file and it goes straight to ImageKit,
- * or paste an external URL if you'd rather link one.
+ * Admin image field: pick or drop an image file and it goes straight to
+ * ImageKit. There is no URL box — every image on the platform is one we host.
  *
- * `value` is always the final public URL that gets saved with the record.
+ * `value` is the public URL of the uploaded asset, saved with the record.
  */
 export default function ImageUploader({
   label = "Image",
@@ -21,7 +21,6 @@ export default function ImageUploader({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [dragging, setDragging] = useState(false);
-  const [showUrl, setShowUrl] = useState(false);
   // fileId of the asset we uploaded in this session, so "Remove" can clean it up.
   const [lastFileId, setLastFileId] = useState(null);
 
@@ -60,16 +59,7 @@ export default function ImageUploader({
 
   return (
     <div className={className}>
-      <div className="mb-1 flex items-center justify-between">
-        <label className="label mb-0">{label}</label>
-        <button
-          type="button"
-          onClick={() => setShowUrl((s) => !s)}
-          className="text-xs font-semibold text-ink-mute hover:text-ink"
-        >
-          {showUrl ? "Hide URL field" : "Use a URL instead"}
-        </button>
-      </div>
+      <label className="label">{label}</label>
 
       {value ? (
         <div className="relative overflow-hidden rounded-xl border border-ink/10 bg-cream/60">
@@ -87,7 +77,7 @@ export default function ImageUploader({
                 ? "☁︎ Served by ImageKit"
                 : /\/uploads\//.test(value)
                 ? "💾 Stored on the server (set up ImageKit to use the CDN)"
-                : "🔗 External URL"}
+                : "🔗 External link — upload a file to host it yourself"}
             </span>
             <div className="flex gap-2">
               <button
@@ -138,15 +128,6 @@ export default function ImageUploader({
         className="hidden"
         onChange={(e) => send(e.target.files?.[0] || null)}
       />
-
-      {showUrl && (
-        <input
-          className="input mt-2 text-sm"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="https://…"
-        />
-      )}
 
       {error && <p className="mt-2 text-xs font-semibold text-rose-700">{error}</p>}
     </div>
