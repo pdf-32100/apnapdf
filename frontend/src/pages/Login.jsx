@@ -46,12 +46,6 @@ export default function Login() {
       <p className="mt-6 text-center text-sm text-ink-mute">
         New here? <Link to="/register" className="link-underline">Create an account</Link>
       </p>
-
-      <div className="mt-6 rounded-xl border border-dashed border-ink/15 bg-cream/60 p-4 text-xs text-ink-mute">
-        <p className="font-semibold text-ink-soft">Demo logins</p>
-        <p className="mt-1">Admin — admin@printwala.test / admin12345</p>
-        <p>Customer — customer@printwala.test / customer123</p>
-      </div>
     </AuthShell>
   );
 }

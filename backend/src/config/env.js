@@ -27,10 +27,12 @@ const env = {
       return Boolean(this.publicKey && this.privateKey && this.urlEndpoint);
     },
   },
+  // The first admin account, created by the seed script. No defaults on
+  // purpose: an unset value must fail loudly, never create a known login.
   admin: {
-    name: process.env.ADMIN_NAME || "PrintWala Admin",
-    email: process.env.ADMIN_EMAIL || "admin@printwala.test",
-    password: process.env.ADMIN_PASSWORD || "admin12345",
+    name: process.env.ADMIN_NAME || "Admin",
+    email: process.env.ADMIN_EMAIL || "",
+    password: process.env.ADMIN_PASSWORD || "",
   },
 };
 

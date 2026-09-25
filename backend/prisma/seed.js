@@ -16,6 +16,13 @@ function slugify(str) {
 async function main() {
   console.log("Seeding database…");
 
+  if (!env.admin.email || !env.admin.password) {
+    throw new Error(
+      "ADMIN_EMAIL and ADMIN_PASSWORD must be set before seeding — " +
+        "the seed never creates a default account."
+    );
+  }
+
   // Admin user
   const passwordHash = await bcrypt.hash(env.admin.password, 10);
   const admin = await prisma.user.upsert({
@@ -28,20 +35,7 @@ async function main() {
       role: "ADMIN",
     },
   });
-  console.log(`  Admin: ${admin.email} / ${env.admin.password}`);
-
-  // A demo customer
-  await prisma.user.upsert({
-    where: { email: "customer@printwala.test" },
-    update: {},
-    create: {
-      name: "Demo Customer",
-      email: "customer@printwala.test",
-      phone: "9876543210",
-      passwordHash: await bcrypt.hash("customer123", 10),
-      role: "USER",
-    },
-  });
+  console.log(`  Admin: ${admin.email} (password from ADMIN_PASSWORD)`);
 
   // Categories
   const categoryNames = ["Printing & Copy", "Documentation", "Design", "Government Services"];

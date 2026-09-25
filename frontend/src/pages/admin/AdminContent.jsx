@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../api/client.js";
 import ImageUploader from "../../components/ImageUploader.jsx";
+import ImageListEditor from "../../components/ImageListEditor.jsx";
 import { Alert, Spinner } from "../../components/ui.jsx";
 
 const TABS = [
@@ -171,6 +172,16 @@ function HomeForm({ value, set }) {
           value={value.heroImage}
           onChange={(v) => set("heroImage", v)}
           hint="The large picture beside the headline. Landscape works best."
+        />
+      </Card>
+      <Card title="Our work gallery">
+        <ImageListEditor
+          label="Gallery images"
+          kind="content"
+          items={value.gallery}
+          onChange={(v) => set("gallery", v)}
+          note="The “A peek at what we print” strip on the home page. The first image is shown large. Leave empty to keep the built-in samples."
+          hint="Square-ish photos look best. JPG, PNG or WebP up to 10 MB."
         />
       </Card>
       <Card title="Stats">

@@ -48,6 +48,10 @@ export default function Home() {
     api.get("/services/categories").then((res) => setCategories(res.data.categories || [])).catch(() => {});
   }, []);
 
+  // Gallery images are managed in Admin → Site content → Home page;
+  // the built-in samples show until an admin adds their own.
+  const gallery = Array.isArray(home.gallery) ? home.gallery.filter(Boolean) : [];
+  const galleryImages = gallery.length ? gallery : GALLERY;
   const stats = home.stats?.length
     ? home.stats
     : [
@@ -241,7 +245,7 @@ export default function Home() {
       <section className="container-page py-16">
         <SectionTitle eyebrow="Our work" title="A peek at what we print" subtitle="Crisp text, rich colour and clean finishing on everything we deliver." />
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-          {GALLERY.map((src, i) => (
+          {galleryImages.map((src, i) => (
             <div key={i} className={`overflow-hidden rounded-2xl border border-ink/8 ${i === 0 ? "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" : ""}`}>
               <Img
                 src={src}

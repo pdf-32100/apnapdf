@@ -76,9 +76,9 @@ npm run dev                   # → http://localhost:5173
 
 Open http://localhost:5173.
 
-**Demo logins** (created by the seed):
-- Admin — `admin@printwala.test` / `admin12345`
-- Customer — `customer@printwala.test` / `customer123`
+**Admin login** — the seed creates one admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD`
+in `backend/.env`. Both are required; the seed aborts if they are unset, so there is
+no default account to forget about. Customers sign up through `/register`.
 
 > Without Docker: set `DATABASE_URL` in `backend/.env` to any Postgres you have
 > (including your Aiven URL) and run the same Prisma commands.
