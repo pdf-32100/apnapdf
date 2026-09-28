@@ -14,6 +14,7 @@ export default function ImageUploader({
   value = "",
   onChange,
   kind = "content", // "service" | "content" — decides the ImageKit folder
+  fit = "cover", // "contain" previews the whole image (logos, icons) uncropped
   hint = "JPG, PNG or WebP up to 10 MB. Served and resized by ImageKit.",
   className = "",
 }) {
@@ -63,14 +64,20 @@ export default function ImageUploader({
 
       {value ? (
         <div className="relative overflow-hidden rounded-xl border border-ink/10 bg-cream/60">
-          <Img
-            src={value}
-            alt=""
-            width={800}
-            height={450}
-            className="h-40 w-full object-cover"
-            loading="eager"
-          />
+          {fit === "contain" ? (
+            <div className="grid h-40 place-items-center bg-[repeating-conic-gradient(#f1ede6_0%_25%,#fff_0%_50%)] bg-[length:16px_16px] p-4">
+              <Img src={value} alt="" height={320} className="max-h-full max-w-full object-contain" loading="eager" />
+            </div>
+          ) : (
+            <Img
+              src={value}
+              alt=""
+              width={800}
+              height={450}
+              className="h-40 w-full object-cover"
+              loading="eager"
+            />
+          )}
           <div className="flex items-center justify-between gap-2 border-t border-ink/8 bg-paper px-3 py-2">
             <span className="truncate text-xs text-ink-mute">
               {isImageKitUrl(value)

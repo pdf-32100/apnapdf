@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { LogoMark } from "../../components/ui.jsx";
+import { Brand } from "../../components/ui.jsx";
 
 const nav = [
   { to: "/admin", label: "Dashboard", icon: "📊", end: true },
@@ -23,16 +23,8 @@ export default function AdminLayout() {
 
   const SidebarInner = () => (
     <>
-      <Link to="/" className="flex items-center gap-2.5 px-2 py-1">
-        <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/95 p-1 text-ink">
-          <LogoMark className="h-full w-full" />
-        </span>
-        <div>
-          <div className="font-sans text-lg font-extrabold leading-none tracking-tight">
-            <span className="text-white">Print</span><span className="text-clay-500">Wala</span>
-          </div>
-          <div className="mt-0.5 text-[11px] text-cream/50">Admin panel</div>
-        </div>
+      <Link to="/" className="flex items-center px-2 py-1">
+        <Brand dark size="sm" sub="Admin panel" />
       </Link>
       <nav className="mt-6 flex flex-col gap-1">
         {nav.map((n) => (
@@ -77,10 +69,7 @@ export default function AdminLayout() {
 
       {/* Mobile top bar */}
       <div className="sticky top-0 z-30 flex items-center justify-between border-b border-ink/8 bg-ink px-4 py-3 lg:hidden">
-        <span className="flex items-center gap-2 font-sans text-lg font-extrabold tracking-tight">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-white/95 p-0.5 text-ink"><LogoMark className="h-full w-full" /></span>
-          <span className="text-white">Print</span><span className="text-clay-500">Wala</span>
-        </span>
+        <Brand dark size="xs" />
         <button onClick={() => setOpen(true)} className="grid h-9 w-9 place-items-center rounded-lg bg-white/10 text-white">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
         </button>

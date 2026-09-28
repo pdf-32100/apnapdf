@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useSite } from "../context/SiteContext.jsx";
+import Img from "./Img.jsx";
 
 export function Spinner({ className = "" }) {
   return (
@@ -85,21 +87,55 @@ export function LogoMark({ className = "h-9 w-9" }) {
   );
 }
 
-// Wordmark "PrintWala" — Print (navy) + Wala (orange)
-export function Wordmark({ className = "text-xl" }) {
+/**
+ * Site brand: the logo uploaded in Admin → Content → Site settings, or the
+ * built-in PrintWala mark when none is set, plus the site name.
+ *
+ * `dark` is for navy backgrounds (footer, admin sidebar): the logo sits on a
+ * white tile so dark-coloured logos stay visible.
+ */
+export function Brand({ dark = false, size = "md", sub }) {
+  const { settings } = useSite();
+  const logo = settings.logoUrl;
+  const showName = !logo || settings.logoShowName !== false;
+  const name = settings.siteName || "PrintWala";
+  const h = { xs: "h-6", sm: "h-8", md: "h-9" }[size] || "h-9";
+  const text = { xs: "text-lg", sm: "text-lg", md: "text-xl" }[size] || "text-xl";
+
+  const mark = logo ? (
+    <Img src={logo} alt={name} height={120} loading="eager" className={`${h} w-auto max-w-[180px] object-contain`} />
+  ) : (
+    <LogoMark className={`${h} ${h.replace("h-", "w-")}`} />
+  );
+
   return (
-    <span className={`font-sans font-extrabold leading-none tracking-tight ${className}`}>
-      <span className="text-ink">Print</span>
-      <span className="text-clay-500">Wala</span>
+    <span className="flex items-center gap-2.5">
+      {dark ? <span className="grid place-items-center rounded-xl bg-white/95 p-1 text-ink">{mark}</span> : <span className="text-ink">{mark}</span>}
+      {(showName || sub) && (
+        <span>
+          {showName && (
+            <span className={`block font-sans font-extrabold leading-none tracking-tight ${text}`}>
+              {name === "PrintWala" ? (
+                <>
+                  <span className={dark ? "text-white" : "text-ink"}>Print</span>
+                  <span className="text-clay-500">Wala</span>
+                </>
+              ) : (
+                <span className={dark ? "text-white" : "text-ink"}>{name}</span>
+              )}
+            </span>
+          )}
+          {sub && <span className="mt-0.5 block text-[11px] text-cream/50">{sub}</span>}
+        </span>
+      )}
     </span>
   );
 }
 
-export function Logo({ className = "", markClass = "h-9 w-9 text-ink", textClass = "text-xl" }) {
+export function Logo({ className = "" }) {
   return (
-    <Link to="/" className={`flex items-center gap-2.5 ${className}`}>
-      <LogoMark className={markClass} />
-      <Wordmark className={textClass} />
+    <Link to="/" className={`flex items-center ${className}`}>
+      <Brand />
     </Link>
   );
 }

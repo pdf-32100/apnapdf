@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useSite } from "../context/SiteContext.jsx";
-import { LogoMark } from "./ui.jsx";
+import { Brand } from "./ui.jsx";
 
 export default function Footer() {
   const { settings } = useSite();
@@ -9,14 +9,7 @@ export default function Footer() {
     <footer className="mt-24 border-t border-ink/8 bg-ink text-cream">
       <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-5">
         <div className="sm:col-span-2 lg:col-span-2">
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/95 p-1 text-ink">
-              <LogoMark className="h-full w-full" />
-            </span>
-            <span className="font-sans text-xl font-extrabold tracking-tight">
-              <span className="text-white">Print</span><span className="text-clay-500">Wala</span>
-            </span>
-          </div>
+          <Brand dark size="sm" />
           <p className="mt-3 max-w-xs text-sm text-cream/60">{settings.tagline}</p>
         </div>
 

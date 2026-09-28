@@ -3,6 +3,7 @@ import api from "../../api/client.js";
 import ImageUploader from "../../components/ImageUploader.jsx";
 import ImageListEditor from "../../components/ImageListEditor.jsx";
 import { Alert, Spinner } from "../../components/ui.jsx";
+import { useSite } from "../../context/SiteContext.jsx";
 
 const TABS = [
   { key: "settings", label: "Site settings" },
@@ -41,6 +42,7 @@ function ContentEditor({ tab }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState({ kind: "", msg: "" });
+  const { updateSettings } = useSite();
 
   useEffect(() => {
     setLoading(true);
@@ -51,7 +53,8 @@ function ContentEditor({ tab }) {
     setSaving(true);
     setStatus({ kind: "", msg: "" });
     try {
-      await api.put(`/admin/content/${tab}`, { value });
+      const res = await api.put(`/admin/content/${tab}`, { value });
+      if (tab === "settings") updateSettings(res.data.value || value);
       setStatus({ kind: "success", msg: "Saved! Changes are live on the site." });
     } catch (err) {
       setStatus({ kind: "error", msg: err.friendlyMessage || "Could not save." });
@@ -145,6 +148,38 @@ function SettingsForm({ value, set }) {
   const social = value.social || {};
   const setSocial = (k, v) => set("social", { ...social, [k]: v });
   return (
+    <>
+    <Card title="Logo & favicon">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <ImageUploader
+            label="Logo"
+            value={value.logoUrl}
+            onChange={(v) => set("logoUrl", v)}
+            fit="contain"
+            hint="PNG (transparent background) or WebP, up to 10 MB. Leave empty to use the default logo."
+          />
+          <label className="mt-3 flex items-center gap-2 text-sm text-ink-soft">
+            <input
+              type="checkbox"
+              className="h-4 w-4 accent-clay-500"
+              checked={value.logoShowName !== false}
+              onChange={(e) => set("logoShowName", e.target.checked)}
+              disabled={!value.logoUrl}
+            />
+            Show the site name next to the logo
+          </label>
+          <p className="mt-1 text-xs text-ink-mute">Untick this if your logo image already contains the name.</p>
+        </div>
+        <ImageUploader
+          label="Favicon (browser tab icon)"
+          value={value.faviconUrl}
+          onChange={(v) => set("faviconUrl", v)}
+          fit="contain"
+          hint="Square PNG, at least 64×64 (512×512 is best). Leave empty to use the default icon."
+        />
+      </div>
+    </Card>
     <Card title="Business details">
       <div className="grid gap-4 sm:grid-cols-2">
         <Text label="Site name" value={value.siteName} onChange={(v) => set("siteName", v)} />
@@ -156,6 +191,7 @@ function SettingsForm({ value, set }) {
       </div>
       <Text label="Address" value={value.address} onChange={(v) => set("address", v)} textarea rows={2} />
     </Card>
+    </>
   );
 }
 
